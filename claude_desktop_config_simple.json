@@ -1,0 +1,17 @@
+{
+    "mcpServers": {
+        "nepse-stock-server": {
+            "command": "npx",
+            "args": [
+                "@modelcontextprotocol/server-fetch",
+                "https://your-deployed-url.azurecontainerapps.io"
+            ],
+            "env": {
+                "X-API-KEY": "demo_key_123",
+                "CLIENT_ID": "your-client-id",
+                "USERNAME": "your-username",
+                "PASSWORD": "your-password"
+            }
+        }
+    }
+}

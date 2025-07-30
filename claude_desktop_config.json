@@ -1,0 +1,15 @@
+{
+    "mcpServers": {
+        "nepse-stock-server": {
+            "command": "node",
+            "args": [
+                "-e",
+                "const http = require('http'); const url = require('url'); const server = http.createServer((req, res) => { if (req.method === 'POST') { let body = ''; req.on('data', chunk => body += chunk); req.on('end', () => { const request = JSON.parse(body); const options = { hostname: 'your-deployed-url.azurecontainerapps.io', port: 443, path: '/', method: 'POST', headers: { 'Content-Type': 'application/json', 'X-API-KEY': 'demo_key_123' } }; const proxyReq = require('https').request(options, proxyRes => { let data = ''; proxyRes.on('data', chunk => data += chunk); proxyRes.on('end', () => { res.writeHead(proxyRes.statusCode, proxyRes.headers); res.end(data); }); }); proxyReq.on('error', err => { res.writeHead(500); res.end(JSON.stringify({error: err.message})); }); proxyReq.write(body); proxyReq.end(); }); } else { res.writeHead(405); res.end('Method not allowed'); } }); server.listen(0, () => console.log('MCP proxy server started on port', server.address().port));"
+            ],
+            "env": {
+                "MCP_SERVER_URL": "https://your-deployed-url.azurecontainerapps.io",
+                "API_KEY": "demo_key_123"
+            }
+        }
+    }
+}
